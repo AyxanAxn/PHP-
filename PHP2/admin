@@ -1,0 +1,114 @@
+<?php
+    require "vars.php";
+    $lang=isset($_GET['lang']) ? $_GET["lang"] : "az";
+    $page=isset($_GET['page']) ? $_GET['page'] : "main";
+    
+    $file="$lang/$page.php";
+
+
+    if(isset($_GET['text']))
+        file_put_contents($file,$_GET['text']);
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>tinymce.init({selector:'textarea'});</script>
+
+</head>
+<body>
+    <header class="bg-dark bg-opacity-25 py-4 px-5">
+    <h1 class="text-end">CMS- content manager system</h1>
+    </header>
+
+    <div class="container-fluid">
+
+
+    
+    <main style="min-height: 70vh" class="row">
+        <nav class="col-md-3 bg-dark bg-opacity-10">
+
+            <form class="text-center">
+
+
+            <?php
+
+        for($i = 0; $i < count($langs); $i++) {
+        echo 
+            '<div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input '.($langs[$i] == $lang ? 'checked="checked"' : '').' onclick="submit(this.value)" value="'.$langs[$i].'" class="form-check-input" name="lang" type="radio" />
+                '.ucfirst($langs[$i]).'</label>
+            </div>';
+        };
+
+            ?>
+            </form>
+
+            <ul class="nav flex-column w-50 mx-auto">
+
+            <?php
+                foreach($menu[$lang] as $f=>$m){
+                    echo'
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="?lang='.$lang.'&page='.$f.'">'.$m.'</a>
+                    </li>
+                    ';
+                }
+            ?>
+        </nav>
+        <section class="col-md-9">
+            <form>
+                <ol style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#"><?=$lang?></a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?=$page?></li>
+                  </ol>
+
+                  <input name="lang" type="hidden" value="<?=$lang?>">
+                  <input name="page" type="hidden" value="<?=$page?>">
+
+                  <div class="mb-3">
+                    <label for="text" class="form-label">Example textarea</label>
+                    <textarea name="text" class="form-control" id="text" rows="25"><?=include "$file"?></textarea>
+                  </div>
+                  <input type="submit" class="btn btn-primary" value="Submit"></imput>
+            </form>
+
+
+        </section>
+        
+        
+        
+        
+        </main>
+    </div>
+    <footer class="bg-dark text-light py-2">
+        <p class="container text-center">Copyright &copy; 2021</p>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+<!-- <div class="form-check form-check-inline">
+    <label class="form-check-label">
+        <input onclick="submit(this.value)" value="az" class="form-check-input" name="lang" type="radio" checked="checked">az
+    </label>
+</div>
+<div class="form-check form-check-inline">
+    <label class="form-check-label">
+        <input onclick="submit(this.value)" value="en" class="form-check-input" name="lang" type="radio">en
+    </label>
+</div>
+<div class="form-check form-check-inline">
+    <label class="form-check-label">
+        <input onclick="submit(this.value)" value="ru" class="form-check-input" name="lang" type="radio">ru
+    </label>
+</div> -->
